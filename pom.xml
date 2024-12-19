@@ -49,7 +49,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
     </dependencies>
 
     <!--Roda, faz o build e empacota o projeto (criar o arquivo jar no final) quando quiser colocar em produção-->

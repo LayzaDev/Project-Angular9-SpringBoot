@@ -1,5 +1,6 @@
 package layzadev.github.io.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,8 @@ public class Client {
     @Column(nullable = false, length = 11)
     private String cpf;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", updatable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate registrationDate;
 
     @PrePersist

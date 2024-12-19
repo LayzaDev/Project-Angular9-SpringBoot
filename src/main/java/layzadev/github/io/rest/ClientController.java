@@ -5,10 +5,8 @@ import layzadev.github.io.model.entity.Client;
 import layzadev.github.io.model.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -22,7 +20,39 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client salvar(Client client){
+    public Client save( @RequestBody Client client){
         return repository.save(client);
+    }
+
+    @GetMapping("{id}")
+    public Client searchById(@PathVariable Integer id){
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id){
+        repository
+            .findById(id)
+            .map(client -> {
+                repository.delete(client);
+                return Void.TYPE;
+            })
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable Integer id, @RequestBody Client updatedClient){
+        repository
+            .findById(id)
+            .map(client -> {
+                updatedClient.setName(client.getName());
+                updatedClient.setCpf(client.getCpf());
+                return repository.save(updatedClient);
+            })
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
