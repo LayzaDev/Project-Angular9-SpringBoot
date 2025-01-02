@@ -1,12 +1,14 @@
 package layzadev.github.io.rest;
 
-import layzadev.github.io.ClientsApplication;
 import layzadev.github.io.model.entity.Client;
 import layzadev.github.io.model.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/clients")
@@ -20,7 +22,7 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client save( @RequestBody Client client){
+    public Client save( @RequestBody @Valid Client client){
         return repository.save(client);
     }
 
@@ -28,7 +30,7 @@ public class ClientController {
     public Client searchById(@PathVariable Integer id){
         return repository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado."));
     }
 
     @DeleteMapping("{id}")
@@ -40,12 +42,12 @@ public class ClientController {
                 repository.delete(client);
                 return Void.TYPE;
             })
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado."));
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Client updatedClient){
+    public void update(@PathVariable Integer id, @RequestBody @Valid Client updatedClient){
         repository
             .findById(id)
             .map(client -> {
@@ -53,6 +55,6 @@ public class ClientController {
                 updatedClient.setCpf(client.getCpf());
                 return repository.save(updatedClient);
             })
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado."));
     }
 }

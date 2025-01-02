@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Data
@@ -24,12 +25,12 @@ public class Client {
     private Integer id;
 
     @Column(nullable = false, length = 150)
-    @NotEmpty(message = "{field.name.required}")
+    @NotEmpty(message = "{campo.name.obrigatorio}")
     private String name;
 
     @Column(nullable = false, length = 11)
-    @NotNull(message = "{field.cpf.required}")
-    @CPF(message = "{field.cpf.invalid}")
+    @NotNull(message = "{campo.cpf.obrigatorio}")
+    //@CPF(message = "{campo.cpf.invalido}")
     private String cpf;
 
     @Column(name = "registration_date", updatable = false)

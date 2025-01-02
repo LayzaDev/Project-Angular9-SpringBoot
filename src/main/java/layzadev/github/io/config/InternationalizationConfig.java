@@ -15,8 +15,8 @@ public class InternationalizationConfig {
     public MessageSource messageSource(){
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
-        messageSource.setDefaultEncoding("ISO-8859-1"); // Reconhece os caracteres brasileiros (ç, ã)
-        messageSource.setDefaultLocale(Locale.getDefault());
+        messageSource.setDefaultEncoding("UTF-8"); // Reconhece os caracteres brasileiros (ç, ã)
+        messageSource.setDefaultLocale( Locale.getDefault() );
         return messageSource;
     }
 
